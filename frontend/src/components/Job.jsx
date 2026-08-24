@@ -5,7 +5,7 @@ import { Avatar, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { JOB_API_END_POINT } from "@/utils/constant";
+// import { JOB_API_END_POINT } from "@/utils/constant";
 const Job = ({ job }) => {
   const navigate = useNavigate();
   // const jobId = "lsekdhjgdsnfvsdkjf";
@@ -19,7 +19,7 @@ const Job = ({ job }) => {
   const saveJobHandler = async () => {
     try {
       const res = await axios.post(
-        `/api/v1/saved/save/${job._id}`,
+        `http://localhost:3000/api/v1/saved/save/${job._id}`,
         {},
         {
           withCredentials: true,
@@ -83,7 +83,9 @@ const Job = ({ job }) => {
         >
           Details
         </Button>
-        <Button className="bg-[#7209b7]">Save For Later</Button>
+        <Button className="bg-[#7209b7]" onClick={saveJobHandler}>
+          Save For Later
+        </Button>
       </div>
     </div>
   );
