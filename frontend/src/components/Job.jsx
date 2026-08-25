@@ -27,16 +27,14 @@ const Job = ({ job }) => {
         },
       );
 
-      console.log(res.data);
-      toast.success("Job saved successfully");
+      console.log("SAVE RESPONSE:", res.data);
+      toast.success(res.data.message || "Job saved successfully");
     } catch (error) {
-      if (error.response?.status === 400) {
-        toast.error("Job is already saved");
-      } else {
-        toast.error("Failed to save job");
-      }
+      console.log("SAVE ERROR:", error);
+      console.log("STATUS:", error.response?.status);
+      console.log("DATA:", error.response?.data);
 
-      console.log(error);
+      toast.error(error.response?.data?.message || "Failed to save job");
     }
   };
   return (
