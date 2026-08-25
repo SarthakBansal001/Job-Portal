@@ -105,7 +105,7 @@ export const login = async (req, res) => {
       .status(200)
       .cookie("token", token, {
         maxAge: 1 * 24 * 60 * 60 * 1000,
-        httpsOnly: true,
+        httpOnly: true,
         sameSite: "strict",
       })
       .json({
@@ -130,17 +130,16 @@ export const logout = async (req, res) => {
 export const updateProfile = async (req, res) => {
   try {
     const { fullname, email, phoneNumber, bio, skills } = req.body;
-
     const file = req.file;
-    // cloudinary ayega idhar
-    const fileUri = getDataUri(file);
-    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
 
     let skillsArray;
+
     if (skills) {
       skillsArray = skills.split(",");
     }
-    const userId = req.id; // middleware authentication
+
+    const userId = req.id;
+
     let user = await User.findById(userId);
 
     if (!user) {
@@ -149,17 +148,24 @@ export const updateProfile = async (req, res) => {
         success: false,
       });
     }
-    // updating data
+
+    // Update normal profile data
     if (fullname) user.fullname = fullname;
     if (email) user.email = email;
     if (phoneNumber) user.phoneNumber = phoneNumber;
     if (bio) user.profile.bio = bio;
     if (skills) user.profile.skills = skillsArray;
 
-    // resume comes later here...
-    if (cloudResponse) {
-      user.profile.resume = cloudResponse.secure_url; // save the cloudinary url
-      user.profile.resumeOriginalName = file.originalname; // Save the original file name
+    // Upload resume ONLY if user selected a file
+    if (file) {
+      const fileUri = getDataUri(file);
+
+      const cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+        resource_type: "auto",
+      });
+
+      user.profile.resume = cloudResponse.secure_url;
+      user.profile.resumeOriginalName = file.originalname;
     }
 
     await user.save();
@@ -179,6 +185,11 @@ export const updateProfile = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log(error);
+    console.log("UPDATE PROFILE ERROR:", error);
+
+    return res.status(500).json({
+      message: "Failed to update profile.",
+      success: false,
+    });
   }
 };

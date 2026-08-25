@@ -5,6 +5,7 @@ import { Avatar, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "sonner";
 // import { JOB_API_END_POINT } from "@/utils/constant";
 const Job = ({ job }) => {
   const navigate = useNavigate();
@@ -27,7 +28,14 @@ const Job = ({ job }) => {
       );
 
       console.log(res.data);
+      toast.success("Job saved successfully");
     } catch (error) {
+      if (error.response?.status === 400) {
+        toast.error("Job is already saved");
+      } else {
+        toast.error("Failed to save job");
+      }
+
       console.log(error);
     }
   };

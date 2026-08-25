@@ -14,7 +14,6 @@ const app = express();
 
 // middleware
 app.use(express.json());
-// app.use("/api/v1/saved", savedJobRoute);
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 const corsOptions = {

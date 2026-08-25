@@ -52,9 +52,10 @@ export const getSavedJobs = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log(error);
+    console.log("GET SAVED JOBS ERROR:", error);
+
     return res.status(500).json({
-      message: "Failed to get saved jobs",
+      message: "Failed to fetch saved jobs",
       success: false,
     });
   }
