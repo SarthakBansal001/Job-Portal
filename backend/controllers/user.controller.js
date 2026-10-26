@@ -41,7 +41,7 @@ export const register = async (req, res) => {
       password: hashedPassword,
       role,
       profile: {
-        profilePhoto: cloudResponse.secure_url,
+        profilePhoto: cloudResponse?.secure_url || "",
       },
     });
 
@@ -50,7 +50,12 @@ export const register = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log(error);
+    console.log("REGISTER ERROR:", error);
+
+    return res.status(500).json({
+      message: error.message,
+      success: false,
+    });
   }
 };
 export const login = async (req, res) => {

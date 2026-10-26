@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -185,3 +186,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 };
 
 export default UpdateProfileDialog;
+UpdateProfileDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  setOpen: PropTypes.func.isRequired,
+};

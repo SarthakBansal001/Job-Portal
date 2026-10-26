@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "./ui/button";
 import { Bookmark } from "lucide-react";
 import { Avatar, AvatarImage } from "./ui/avatar";
@@ -6,6 +5,7 @@ import { Badge } from "./ui/badge";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
+import PropTypes from "prop-types";
 // import { JOB_API_END_POINT } from "@/utils/constant";
 const Job = ({ job }) => {
   const navigate = useNavigate();
@@ -98,3 +98,18 @@ const Job = ({ job }) => {
 };
 
 export default Job;
+Job.propTypes = {
+  job: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    createdAt: PropTypes.string,
+    company: PropTypes.shape({
+      name: PropTypes.string,
+      logo: PropTypes.string,
+    }),
+    title: PropTypes.string,
+    description: PropTypes.string,
+    position: PropTypes.number,
+    jobType: PropTypes.string,
+    salary: PropTypes.number,
+  }).isRequired,
+};
